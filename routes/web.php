@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Dashboard
+
+// home
+Route::get('/dashboard', [HomeController::class, 'index']);
+
+
+
+// Users
+Route::get('/dashboard/user', [UserController::class, 'index']);
+Route::post('/dashboard/user/add', [UserController::class, 'store']);
+Route::get('/dashboard/user/status', [UserController::class, 'change']);
+Route::post('/dashboard/user/edit/{id}', [UserController::class, 'update']);
+Route::get('/dashboard/user/delete/{id}', [UserController::class, 'destroy']);
