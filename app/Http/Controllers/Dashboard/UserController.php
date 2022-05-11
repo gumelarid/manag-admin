@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\RoleModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,8 +26,9 @@ class UserController extends Controller
 
     public function index(){
         $title = "User List";
-        $data = UserModel::all();
-        return view('dashboard.user.index', compact('title','data'));
+        $data = UserModel::get();
+        $role = RoleModel::all();
+        return view('dashboard.user.index', compact('title','data','role'));
     }
 
     public function store(Request $request){
@@ -49,7 +51,7 @@ class UserController extends Controller
             'user_email'    => $request->email,
             'user_password' => Hash::make($request->password),
             'status'        => 1,
-            'role'          => $request->role,
+            'role_id'          => $request->role,
             'profile'       => 'default.png'
         ]);
 
@@ -115,14 +117,14 @@ class UserController extends Controller
                 $check->update([
                     'user_name'     => $request->name,
                     'user_email'    => $request->email,
-                    'role'     => $request->role
+                    'role_id'     => $request->role
                 ]);
             }else{
                 $valid = Validator::make($request->all(),[
                     'name'      => 'required',
                     'email'     => 'required|email',
                     'password'  => 'required|min:8',
-                    'role'      => 'required',
+                    'role_id'      => 'required',
                 ]);
 
                 if ($valid->fails()) {
@@ -135,7 +137,7 @@ class UserController extends Controller
                     'user_name'     => $request->name,
                     'user_email'    => $request->email,
                     'user_password' => Hash::make($request->password),
-                    'role'     => $request->role
+                    'role_id'     => $request->role
                 ]);
             }
 
@@ -150,7 +152,6 @@ class UserController extends Controller
             
 
         };
-        dd($id);
         return Redirect::to('/dashboard/user');
     }
 

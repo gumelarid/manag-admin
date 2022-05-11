@@ -48,10 +48,9 @@
             <table id="datatable" class="table align-items-center justify-content-center mb-0">
               <thead>
                 <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Level</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Navigation</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Url</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>
                     <th class="text-secondary opacity-7"></th>
                   </tr>
               </thead>
@@ -61,34 +60,30 @@
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div>
-                          <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                            <i class="material-icons opacity-10">{{ $item->icon }}</i>
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{ $item->user_name }}</h6>
-                          <p class="text-xs text-secondary mb-0">{{ $item->user_email }}</p>
+                          <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
                         </div>
                       </div>
                     </td>
                     <td>
-                        <p class="text-xs font-weight-bold mb-0">{{ $item->role->role }}</p>
+                        <p class="text-xs font-weight-bold mb-0">{{ $item->url }}</p>
                     </td>
                     <td class="align-middle text-center text-sm">
-                      @if ($item->status == 1)
+                      @if ($item->is_active == 1)
                         <span class="badge badge-sm bg-gradient-success">Active</span>
                       @else
                         <span class="badge badge-sm bg-gradient-secondary">Disable</span>
                       @endif
                     </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">{{ $item->created_at }}</span>
-                    </td>
                     <td class="align-middle">
-                        @if ($item->status == 0)
-                          <a href="<?= url('dashboard/user/status?user='.$item->user_id.'&status='.$item->status) ?>" class="text-secondary font-weight-bold text-xs" >
+                        @if ($item->is_active == 0)
+                          <a href="<?= url('dashboard/navigation/status?id='.$item->nav_id.'&status='.$item->is_active) ?>" class="text-secondary font-weight-bold text-xs" >
                             Active
                           </a> | 
                         @else
-                          <a href="<?= url('dashboard/user/status?user='.$item->user_id.'&status='.$item->status) ?>" class="text-secondary font-weight-bold text-xs" >
+                          <a href="<?= url('dashboard/navigation/status?id='.$item->nav_id.'&status='.$item->is_active) ?>" class="text-secondary font-weight-bold text-xs" >
                             Disable
                           </a> | 
                         @endif
@@ -96,13 +91,12 @@
                         <a href="#" onclick="edit({{ $item }})" class="text-secondary font-weight-bold text-xs" >
                             Edit
                         </a> | 
-                        <a href="{{ url('/dashboard/user/delete/'.$item->user_id) }}" onclick="return confirm('Are you Sure Delete this User?')" class="text-secondary font-weight-bold text-xs" >
+                        <a href="{{ url('/dashboard/navigation/delete/'.$item->nav_id) }}" onclick="return confirm('Are you Sure Delete this Navigation?')" class="text-secondary font-weight-bold text-xs" >
                             Delete
                         </a>
                     </td>
                   </tr>
                 @endforeach
-
               </tbody>
             </table>
           </div>
@@ -116,34 +110,26 @@
                 <div class="modal-body p-0">
                   <div class="card card-plain">
                     <div class="card-header pb-0 text-left">
-                      <h5 id="header-form">Add Users</h5>
+                      <h5 id="header-form">Add Navigation</h5>
                     </div>
                     <div class="card-body">
-                      <form id="link" action="{{ url('/dashboard/user/add') }}" method="POST" role="form text-left">
+                      <form id="link" action="{{ url('/dashboard/navigation/add') }}" method="POST" role="form text-left">
                         @csrf
+                        <span>icon can be seen in the following <a href="https://fonts.google.com/icons">Click Here</a>, copy the name of the icon in the field below</span>
                         <div class="input-group input-group-outline my-3">
                             <label class="form-label">Name</label>
                             <input type="text" name="name" id="name" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('name') }}" required>
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Email</label>
-                          <input type="email" name="email" id="email" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('email') }}" required>
+                          <label class="form-label">Url</label>
+                          <input type="text" name="url" id="url" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('url') }}" required>
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label id="lb-pass" class="form-label">Password</label>
-                          <input type="password" name="password" id="password" min="8" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" required>
-                        </div>
-                        <div class="input-group input-group-outline my-3">
-                          <select id="role" class="form-select p-3" name="role" aria-label="Default select example" required>
-                            <option selected disabled>Select Role</option>
-                            @foreach ($role as $r)
-                              <option value="{{ $r->role_id }}">{{ $r->role }}</option>
-                            @endforeach
-                            
-                          </select>
+                          <label class="form-label">Icon</label>
+                          <input type="text" name="icon" id="icon" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" required>
                         </div>
                         <div class="text-center">
-                          <button type="submit" id="btn_user" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Save User</button>
+                          <button type="submit" id="btn_nav" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Save Navigation</button>
                         </div>
                       </form>
                     </div>
@@ -182,30 +168,24 @@
          <script>
            function add(){
               $('#modal-form').modal('show');
-              $('#header-form').text('Add User')
-              $('#btn_user').text('Save User')
-              $('#lb-pass').text('Password')
+              $('#header-form').text('Add Navigation')
+              $('#btn_user').text('Save Navigation')
              
-              var link = $('#link').attr('action', `<?php echo url('/dashboard/user/add'); ?>`);
-              $('#password').attr('required', '');
+              var link = $('#link').attr('action', `<?php echo url('/dashboard/navigation/add'); ?>`);
               $('#name').val('')
-              $('#email').val('')
-              $('#password').val('')
-              $('#role').val('Select Role')
+              $('#url').val('')
+              $('#icon').val('')
            }
 
            function edit(data){
               $('#modal-form').modal('show');
-              $('#header-form').text('Edit User')
-              $('#btn_user').text('Update User')
-              $('#lb-pass').text('New Password')
+              $('#header-form').text('Edit Navigation')
+              $('#btn_user').text('Update Navigation')
              
-              var link = $('#link').attr('action', `<?php echo url('/dashboard/user/edit/${data.user_id}'); ?>`);
-              $('#password').removeAttr('required')
-              $('#password').val('')
-              $('#name').val(data.user_name)
-              $('#email').val(data.user_email)
-              $('#role').val(data.role_id)
+              var link = $('#link').attr('action', `<?php echo url('/dashboard/navigation/edit/${data.nav_id}'); ?>`);
+              $('#name').val(data.name)
+              $('#url').val(data.url)
+              $('#icon').val(data.icon)
               
            }
          </script>

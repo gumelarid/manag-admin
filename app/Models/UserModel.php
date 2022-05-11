@@ -14,5 +14,12 @@ class UserModel extends Model
     protected $primaryKey = 'user_id';
     protected $keyType = 'string';
 
-    protected $guarded = [];
+    protected $guarded = [
+    ];
+
+
+    public function role()
+    {
+        return $this->belongsTo(RoleModel::class, 'role_id');
+    }
 }
