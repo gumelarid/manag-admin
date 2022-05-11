@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\NavModel;
 use App\Models\RoleModel;
+use App\Models\UserAccessModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
@@ -112,5 +115,56 @@ class RoleController extends Controller
         };
 
         return Redirect::to('/dashboard/role');
+    }
+
+
+    // access
+    public function access(Request $request){
+        
+        $role = RoleModel::where('role_id', $request->query('role'))->first();
+        if (!$role) {
+            $notification = array(
+                'message' => 'Oopps Role not found',
+                'alert-type' => 'warning'
+            );
+            
+            return Redirect::to('/dashboard/role')->with($notification);
+        };
+
+        $title = 'User Access : '.$role->role;
+        $nav = NavModel::where('is_active', '1')->get();
+        return view('dashboard.access.index', compact('title','role','nav'));
+    }
+
+    public function checked(Request $request){
+        
+        $checkAccess = UserAccessModel::where('nav_id', $request->nav)
+                                    ->where('role_id', $request->role)
+                                    ->first();
+        if (!$checkAccess) {
+            UserAccessModel::create([
+                'access_id' => Str::uuid(),
+                'role_id'   => $request->role,
+                'nav_id'    => $request->nav
+            ]);
+
+            $notification = array(
+                'message' => 'Access '.$request->name.' Enable',
+                'alert' => 'success'
+            );
+            
+            return $notification;
+        }else{
+            UserAccessModel::where('nav_id', $request->nav)
+                                    ->where('role_id', $request->role)
+                                    ->delete();
+            
+            $notification = array(
+                'message' => 'Access '.$request->name.' Disabled',
+                'alert' => 'warning'
+            );
+                                    
+            return $notification;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\NavModel;
+use App\Models\UserAccessModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -98,6 +99,18 @@ class NavController extends Controller
             
             return Redirect::to('dashboard/navigation')->with($notification);
         };
+
+        $access = UserAccessModel::where('nav_id', $request->query('id'));
+
+        if (count($check->get()) >= 1) {
+            $notification = array(
+                'message' => 'Oopps Please disable access first in role menu!',
+                'alert-type' => 'warning'
+            );
+            
+            return Redirect::to('dashboard/navigation')->with($notification);
+        };
+
 
         $check->update([
             'is_active' => $request->query('status') == 1 ? 0 : 1
