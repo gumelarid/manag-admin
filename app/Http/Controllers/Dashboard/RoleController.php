@@ -7,7 +7,7 @@ use App\Models\NavModel;
 use App\Models\RoleModel;
 use App\Models\SettingModel;
 use App\Models\UserAccessModel;
-use App\Models\UserModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +15,11 @@ use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('access.menu');
+    }
+    
     public function index(){
         $title = 'Role';
 
@@ -95,7 +100,7 @@ class RoleController extends Controller
                 return Redirect::to('/dashboard/role')->with($notification);
             };
 
-            $availableUser = UserModel::where('role_id', $id);
+            $availableUser = User::where('role_id', $id);
             if (count($availableUser->get()) >= 1) {
                 $notification = array(
                     'message' => 'Oopps Role has been taken, please change role in user first',
@@ -138,7 +143,6 @@ class RoleController extends Controller
     }
 
     public function checked(Request $request){
-        
         $checkAccess = UserAccessModel::where('nav_id', $request->nav)
                                     ->where('role_id', $request->role)
                                     ->first();

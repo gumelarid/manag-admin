@@ -64,8 +64,8 @@
                           <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{ $item->user_name }}</h6>
-                          <p class="text-xs text-secondary mb-0">{{ $item->user_email }}</p>
+                          <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
+                          <p class="text-xs text-secondary mb-0">{{ $item->email }}</p>
                         </div>
                       </div>
                     </td>
@@ -83,22 +83,28 @@
                       <span class="text-secondary text-xs font-weight-bold">{{ $item->created_at }}</span>
                     </td>
                     <td class="align-middle">
-                        @if ($item->status == 0)
-                          <a href="<?= url('dashboard/user/status?user='.$item->user_id.'&status='.$item->status) ?>" class="text-secondary font-weight-bold text-xs" >
-                            Active
-                          </a> | 
-                        @else
-                          <a href="<?= url('dashboard/user/status?user='.$item->user_id.'&status='.$item->status) ?>" class="text-secondary font-weight-bold text-xs" >
-                            Disable
-                          </a> | 
-                        @endif
-                       
-                        <a href="#" onclick="edit({{ $item }})" class="text-secondary font-weight-bold text-xs" >
+                        @if (Auth::User()->user_id == $item->user_id)
+                          <a href="#" onclick="edit({{ $item }})" class="text-secondary font-weight-bold text-xs" >
                             Edit
-                        </a> | 
-                        <a href="{{ url('/dashboard/user/delete/'.$item->user_id) }}" onclick="return confirm('Are you Sure Delete this User?')" class="text-secondary font-weight-bold text-xs" >
-                            Delete
-                        </a>
+                          </a>
+                        @else
+                          @if ($item->status == 0)
+                            <a href="<?= url('dashboard/user/status?user='.$item->user_id.'&status='.$item->status) ?>" class="text-secondary font-weight-bold text-xs" >
+                              Active
+                            </a> | 
+                          @else
+                            <a href="<?= url('dashboard/user/status?user='.$item->user_id.'&status='.$item->status) ?>" class="text-secondary font-weight-bold text-xs" >
+                              Disable
+                            </a> | 
+                          @endif
+                        
+                          <a href="#" onclick="edit({{ $item }})" class="text-secondary font-weight-bold text-xs" >
+                              Edit
+                          </a> | 
+                          <a href="{{ url('/dashboard/user/delete/'.$item->user_id) }}" onclick="return confirm('Are you Sure Delete this User?')" class="text-secondary font-weight-bold text-xs" >
+                              Delete
+                          </a>
+                        @endif
                     </td>
                   </tr>
                 @endforeach
@@ -205,8 +211,8 @@
               var link = $('#link').attr('action', `<?php echo url('/dashboard/user/edit/${data.user_id}'); ?>`);
               $('#password').removeAttr('required')
               $('#password').val('')
-              $('#name').val(data.user_name)
-              $('#email').val(data.user_email)
+              $('#name').val(data.name)
+              $('#email').val(data.email)
               $('#role').val(data.role_id)
               
            }

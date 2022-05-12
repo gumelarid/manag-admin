@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 class NavController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('access.menu');
+    }
+
     private function _convert_icon($data){
         if(strpos($data,' ')) {
             $icon = strtolower(str_replace(' ','_', $data));
@@ -156,7 +161,19 @@ class NavController extends Controller
                 return Redirect::to('/dashboard/navigation')->with($notification);
             };
 
+            $access = UserAccessModel::where('nav_id', $id);
+
+            if (count($check->get()) >= 1) {
+                $notification = array(
+                    'message' => 'Oopps Please disable access first in role menu!',
+                    'alert-type' => 'warning'
+                );
+                
+                return Redirect::to('dashboard/navigation')->with($notification);
+            };
+
             $check->delete();
+            $check = UserAccessModel::where('nav_id', $id)->delete();
             $notification = array(
                 'message' => 'Success Delete Navigation',
                 'alert-type' => 'success'

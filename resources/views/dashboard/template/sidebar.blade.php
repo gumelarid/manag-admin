@@ -1,10 +1,9 @@
 <?php 
-  $role = 1;
+  $role = Auth::User()->role_id;
   $nav  = \App\Models\UserAccessModel::where('role_id',$role)->get();
   $label = \App\Models\LabelModel::all();
   $setting  = \App\Models\SettingModel::first();
- ?>
-
+?>
 <body class="g-sidenav-show  bg-gray-200">
     <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
       <div class="sidenav-header">
@@ -61,7 +60,7 @@
       </div>
       <div class="sidenav-footer position-absolute w-100 bottom-0 ">
         <div class="mx-3">
-          <a class="btn bg-gradient-primary mt-4 w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Log Out</a>
+          <a class="btn bg-gradient-primary mt-4 w-100" href="{{ url('logout') }}" onclick="confirm('log out now !')" type="button">Log Out</a>
         </div>
       </div>
     </aside>

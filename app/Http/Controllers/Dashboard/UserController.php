@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\RoleModel;
-use App\Models\UserModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -13,7 +13,11 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('access.menu');
+    }
+    
     private function _validasi($data){
         if ($data->fails()) {
            
@@ -26,7 +30,7 @@ class UserController extends Controller
 
     public function index(){
         $title = "User List";
-        $data = UserModel::get();
+        $data = User::get();
         $role = RoleModel::all();
         return view('dashboard.user.index', compact('title','data','role'));
     }
@@ -45,11 +49,11 @@ class UserController extends Controller
                         ->withInput();
         };
 
-        UserModel::create([
+        User::create([
             'user_id'       => Str::uuid(),
             'user_name'     => $request->name,
-            'user_email'    => $request->email,
-            'user_password' => Hash::make($request->password),
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
             'status'        => 1,
             'role_id'          => $request->role,
             'profile'       => 'default.png'
@@ -64,7 +68,7 @@ class UserController extends Controller
     }
 
     public function change(Request $request){
-        $check = UserModel::where('user_id', $request->query('user'));
+        $check = User::where('user_id', $request->query('user'));
 
         if (count($check->get()) <= 0) {
             $notification = array(
@@ -90,7 +94,7 @@ class UserController extends Controller
     public function update(Request $request, $id = null){
         if ($id !== null) {
     
-            $check = UserModel::where('user_id', $id);
+            $check = User::where('user_id', $id);
 
             if (count($check->get()) <= 0) {
                 $notification = array(
@@ -116,7 +120,7 @@ class UserController extends Controller
 
                 $check->update([
                     'user_name'     => $request->name,
-                    'user_email'    => $request->email,
+                    'email'    => $request->email,
                     'role_id'     => $request->role
                 ]);
             }else{
@@ -124,7 +128,7 @@ class UserController extends Controller
                     'name'      => 'required',
                     'email'     => 'required|email',
                     'password'  => 'required|min:8',
-                    'role_id'      => 'required',
+                    'role'      => 'required',
                 ]);
 
                 if ($valid->fails()) {
@@ -135,8 +139,8 @@ class UserController extends Controller
 
                 $check->update([
                     'user_name'     => $request->name,
-                    'user_email'    => $request->email,
-                    'user_password' => Hash::make($request->password),
+                    'email'    => $request->email,
+                    'password' => Hash::make($request->password),
                     'role_id'     => $request->role
                 ]);
             }
@@ -158,7 +162,7 @@ class UserController extends Controller
     public function destroy($id = null){
 
         if ($id !== null) {
-            $check = UserModel::where('user_id', $id);
+            $check = User::where('user_id', $id);
 
             if (count($check->get()) <= 0) {
                 $notification = array(

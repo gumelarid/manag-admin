@@ -11,6 +11,12 @@ use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('access.menu');
+    }
+
     public function index(){
         $title = 'Settings';
         $setting = SettingModel::get();

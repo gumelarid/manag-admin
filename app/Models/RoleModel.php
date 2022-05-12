@@ -14,6 +14,6 @@ class RoleModel extends Model
     protected $guarded = ['role_id'];
 
     public function user(){
-        return $this->hasOne(UserModel::class, 'role_id');
+        return $this->hasOne(User::class, 'role_id');
     }
 }

@@ -9,7 +9,9 @@ use App\Models\LabelModel;
 use App\Models\NavModel;
 use App\Models\RoleModel;
 use App\Models\SettingModel;
+use App\Models\User;
 use App\Models\UserAccessModel;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +22,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // user
+        User::create([
+            'user_id' => Str::uuid(),
+            'user_name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('11111111'),
+            'status'    => 1,
+            'role_id'   => 1,
+            'profile'   => 'default.png'
+        ]);
+
         // role
         RoleModel::create([
             'role' => 'Administrator'
@@ -72,7 +85,7 @@ class DatabaseSeeder extends Seeder
             'id_label'          => 2,
             'url'               => '/dashboard/user',
             'name'              => 'List Users',
-            'icon'              => 'autorenew',
+            'icon'              => 'manage_accounts',
             'is_active'         => 1,
         ]);
 

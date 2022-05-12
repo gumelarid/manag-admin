@@ -1,5 +1,8 @@
-
-
+<?php
+  $role = Auth::User()->user_id;
+  
+  $user  = \App\Models\User::where('user_id',$role)->first();
+?>
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
@@ -9,16 +12,20 @@
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group input-group-outline">
-              <label class="form-label">Type here...</label>
-              <input type="text" class="form-control">
-            </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+                @if ($user->profile !== 'default.png')
+                  <img src="<?= url('/assets/img/team-2.jpg') ?>" style="width: 15px" class="avatar avatar-sm  me-3 ">
+                @else
+                  <i class="fa fa-user me-sm-1"></i>
+                @endif
+                
+                
+                <span class="d-sm-inline d-none">
+                  {{ $user->user_name }}
+                </span>
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
