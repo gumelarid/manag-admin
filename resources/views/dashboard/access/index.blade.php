@@ -40,6 +40,11 @@
                     @endforeach
                 </div>
             @endif
+
+            <div class="d-flex">
+                <button class="btn btn-sm btn-primary mx-3" onclick="reload()">Reload Page</button>
+                <small class="py-1">* Please reload to implement change</small>
+            </div>
           <div class="table-responsive p-0">
             <table id="datatable" class="table align-items-center justify-content-center mb-0">
               <thead>
@@ -107,6 +112,9 @@
 
 
          <script>
+            function reload(){
+                location.reload();  
+            }
            function access(data){
                 $.ajax({
                         url:"/dashboard/role/access/checked",
@@ -124,7 +132,7 @@
                             }else{
                                 toastr.warning(response.message);
                             }
-                                
+                            
                         },
                         error:function(){
                             alert("error");

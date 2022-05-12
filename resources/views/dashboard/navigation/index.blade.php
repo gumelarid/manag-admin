@@ -27,7 +27,7 @@
      
         <div class="card-body px-0 pb-2">
             <div class="p-3">
-                <a href="#" onclick="add()" data-bs-toggle="modal" data-bs-target="#modal-form" class="badge badge-sm bg-info">Add Users</a>
+                <a href="#" onclick="add()" data-bs-toggle="modal" data-bs-target="#modal-form" class="badge badge-sm bg-info">Add Navigation</a>
             </div>
 
 
@@ -64,6 +64,7 @@
                         </div>
                         <div class="d-flex flex-column justify-content-center">
                           <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
+                          <p>Label : {{ $item->label->label }}</p>
                         </div>
                       </div>
                     </td>
@@ -121,6 +122,15 @@
                             <input type="text" name="name" id="name" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('name') }}" required>
                         </div>
                         <div class="input-group input-group-outline my-3">
+                          <select id="label" class="form-select p-3" name="label" aria-label="Default select example" required>
+                            <option selected disabled>Select Label</option>
+                            @foreach ($label as $r)
+                              <option value="{{ $r->id_label }}">{{ $r->label }}</option>
+                            @endforeach
+                            
+                          </select>
+                        </div>
+                        <div class="input-group input-group-outline my-3">
                           <label class="form-label">Url</label>
                           <input type="text" name="url" id="url" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('url') }}" required>
                         </div>
@@ -175,6 +185,7 @@
               $('#name').val('')
               $('#url').val('')
               $('#icon').val('')
+              $('#label').val('Select Label')
            }
 
            function edit(data){
@@ -186,7 +197,7 @@
               $('#name').val(data.name)
               $('#url').val(data.url)
               $('#icon').val(data.icon)
-              
+              $('#label').val(data.label.id_label)
            }
          </script>
       

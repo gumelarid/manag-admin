@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\LabelModel;
 use App\Models\NavModel;
 use App\Models\UserAccessModel;
 use Illuminate\Http\Request;
@@ -12,12 +13,23 @@ use Illuminate\Support\Str;
 
 class NavController extends Controller
 {
+
+    private function _convert_icon($data){
+        if(strpos($data,' ')) {
+            $icon = strtolower(str_replace(' ','_', $data));
+        }else{
+            $icon = strtolower($data);
+        };
+        return $icon;
+    }
+
     public function index(){
         $title = 'List Navigation';
 
         $data = NavModel::all();
+        $label = LabelModel::all();
 
-        return view('dashboard.navigation.index', compact('title','data'));
+        return view('dashboard.navigation.index', compact('title','data','label'));
     }
 
     public function store(Request $request){
@@ -25,6 +37,7 @@ class NavController extends Controller
             'name'  => 'required',
             'url'   => 'required',
             'icon'  => 'required',
+            'label'  => 'required',
         ]);
 
         if ($valid->fails()) {
@@ -33,9 +46,10 @@ class NavController extends Controller
 
         NavModel::create([
             'nav_id'    => Str::uuid(),
+            'id_label'     => $request->label,
             'name'      => $request->name,
             'url'       => $request->url,
-            'icon'      => str_replace('_',' ', strtolower($request->icon)),
+            'icon'      => $this->_convert_icon($request->icon),
             'is_active' => 1
         ]);
 
@@ -49,6 +63,8 @@ class NavController extends Controller
     }
 
     public function update(Request $request,$id = null){
+       
+
         if ($id !== null) {
             $check = NavModel::where('nav_id', $id);
 
@@ -65,6 +81,7 @@ class NavController extends Controller
                 'name'  => 'required',
                 'url'   => 'required',
                 'icon'  => 'required',
+                'label'  => 'required',
             ]);
     
             if ($valid->fails()) {
@@ -72,9 +89,10 @@ class NavController extends Controller
             };
 
             $check->update([
+                'id_label'     => $request->label,
                 'name'      => $request->name,
                 'url'       => $request->url,
-                'icon'      => str_replace('_',' ', strtolower($request->icon)),
+                'icon'      => $this->_convert_icon($request->icon),
             ]);
 
             $notification = array(

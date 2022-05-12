@@ -64,9 +64,12 @@
                       <span class="text-secondary text-xs font-weight-bold">{{ $item->role }}</span>
                     </td>
                     <td class="align-middle">
-                        <a href="{{ url('/dashboard/role/access?role='.$item->role_id) }}" class="text-secondary font-weight-bold text-xs" >
-                          Access
-                        </a> |
+                        @if ($setting->is_developer == 1)
+                          <a href="{{ url('/dashboard/role/access?role='.$item->role_id) }}" class="text-secondary font-weight-bold text-xs" >
+                            Access
+                          </a> |
+                        @endif
+                       
                         <a href="#" onclick="edit({{ $item }})" class="text-secondary font-weight-bold text-xs" >
                             Edit
                         </a> | 

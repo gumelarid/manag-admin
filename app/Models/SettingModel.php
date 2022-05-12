@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserAccessModel extends Model
+class SettingModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_access';
+    protected $table = 'setting';
 
-    protected $primaryKey = 'access_id';
+    protected $primaryKey = 'id_setting';
     protected $keyType = 'string';
 
     protected $guarded = [];
-
-    function navigation(){
-        return $this->belongsTo(NavModel::class, 'nav_id');
-    }
 }

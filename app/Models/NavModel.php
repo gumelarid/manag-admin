@@ -15,4 +15,12 @@ class NavModel extends Model
     protected $keyType = 'string';
 
     protected $guarded = [];
+
+    function access(){
+        return $this->hasMany(UserAccessModel::class,'access_id');
+    }
+
+    function label(){
+        return $this->belongsTo(LabelModel::class, 'id_label');
+    }
 }

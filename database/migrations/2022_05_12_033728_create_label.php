@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('navigation', function (Blueprint $table) {
-            $table->uuid('nav_id');
-            $table->integer('id_label');
-            $table->string('url');
-            $table->string('name');
-            $table->string('icon');
-            $table->integer('is_active');
+        Schema::create('label', function (Blueprint $table) {
+            $table->integer('id_label',true);
+            $table->string('label');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('navigation');
+        Schema::dropIfExists('label');
     }
 };

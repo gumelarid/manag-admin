@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\NavModel;
 use App\Models\RoleModel;
+use App\Models\SettingModel;
 use App\Models\UserAccessModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -19,8 +20,8 @@ class RoleController extends Controller
 
 
         $data = RoleModel::all();
-
-        return view('dashboard.role.index', compact('title','data'));
+        $setting = SettingModel::first();
+        return view('dashboard.role.index', compact('title','data','setting'));
     }
 
     public function store(Request $request){

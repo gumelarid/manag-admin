@@ -190,6 +190,8 @@
               $('#password').attr('required', '');
               $('#name').val('')
               $('#email').val('')
+              $('#name').val({{ old('name') }})
+              $('#email').val({{ old('email') }})
               $('#password').val('')
               $('#role').val('Select Role')
            }

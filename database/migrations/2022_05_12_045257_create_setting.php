@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('navigation', function (Blueprint $table) {
-            $table->uuid('nav_id');
-            $table->integer('id_label');
-            $table->string('url');
-            $table->string('name');
-            $table->string('icon');
-            $table->integer('is_active');
+        Schema::create('setting', function (Blueprint $table) {
+            $table->uuid('id_setting');
+            $table->string('logo');
+            $table->string('webname');
+            $table->string('description');
+            $table->string('meta_description');
+            $table->integer('is_logo');
+            $table->integer('is_developer');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('navigation');
+        Schema::dropIfExists('setting');
     }
 };

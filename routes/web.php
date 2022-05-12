@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\NavController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserAccessController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\NodeVisitor\NameResolver;
 
@@ -52,3 +53,6 @@ Route::post('/dashboard/navigation/edit/{id}', [NavController::class, 'update'])
 Route::get('/dashboard/navigation/delete/{id}', [NavController::class, 'destroy']);
 
 
+// setting
+Route::get('/dashboard/setting', [SettingController::class, 'index']);
+Route::post('/dashboard/setting/save', [SettingController::class, 'store']);
