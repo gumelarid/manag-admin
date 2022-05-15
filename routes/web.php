@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\NavController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserAccessController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -35,6 +36,12 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard/role/delete/{id}', [RoleController::class, 'destroy']);
     Route::get('/dashboard/role/access', [RoleController::class, 'access']);
     Route::post('/dashboard/role/access/checked', [RoleController::class, 'checked']);
+
+
+    // My Profile
+    Route::get('/dashboard/profile', [ProfileController::class,'index']);
+    Route::post('/dashboard/profile/update', [ProfileController::class,'update']);
+    Route::get('/dashboard/profile/reset', [ProfileController::class,'reset']);
 
     // Users
     Route::get('/dashboard/user', [UserController::class, 'index']);

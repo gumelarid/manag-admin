@@ -17,6 +17,14 @@ class SettingController extends Controller
         $this->middleware('access.menu');
     }
 
+    private function _upload($file){
+        $name_file = time()."_".$file->getClientOriginalName();
+        $dir = 'assets/logo/';
+        $file->move($dir,$name_file);
+
+        return $name_file;
+    }
+
     public function index(){
         $title = 'Settings';
         $setting = SettingModel::get();
@@ -26,6 +34,7 @@ class SettingController extends Controller
     public function store(Request $request)
     {
         $valid = Validator::make($request->all(),[
+            'logo'   => 'file|image|mimes:jpeg,png,jpg|max:1048',
             'title'  => 'required',
             'description'   => 'required',
         ]);
@@ -57,8 +66,22 @@ class SettingController extends Controller
                 ]);
             };
 
+            if ($request->file()) {
+                $file = $request->file('logo');
+                $lg = $check->first();
+                if ($lg->logo !== 'logo_default.png') {
+                    File::delete('assets/logo/'. $lg->logo);
+                }
+    
+                $logo = $this->_upload($file);
+            }else{
+                $lg = $check->first();
+                $logo = $lg->logo;
+            }
+
             $check->update([
                 'webname'           => $request->title,
+                'logo'              => $request->file() ? $logo : $logo,
                 'description'       => $request->description,
                 'meta_description'  => $request->meta
             ]);

@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
         // setting
         SettingModel::create([
             'id_setting'        => Str::uuid(),
-            'logo'              => 'logo-ct.png',
+            'logo'              => 'logo_default.png',
             'webname'           => 'GumelarId Dashboard',
             'description'       => 'Sebuah web dashboard admin open source yang dapat digunakan oleh developer atau company, dapat dikembangkan untuk membuat web company profile, blog, dll',
             'meta_description'  =>  'dashboard admin open source',

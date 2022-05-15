@@ -108,7 +108,6 @@ class UserController extends Controller
             if ($request->password == null) {
                 $valid = Validator::make($request->all(),[
                     'name'      => 'required',
-                    'email'     => 'required|email',
                     'role'      => 'required',
                 ]);
 
@@ -120,13 +119,11 @@ class UserController extends Controller
 
                 $check->update([
                     'user_name'     => $request->name,
-                    'email'    => $request->email,
                     'role_id'     => $request->role
                 ]);
             }else{
                 $valid = Validator::make($request->all(),[
                     'name'      => 'required',
-                    'email'     => 'required|email',
                     'password'  => 'required|min:8',
                     'role'      => 'required',
                 ]);
@@ -139,7 +136,6 @@ class UserController extends Controller
 
                 $check->update([
                     'user_name'     => $request->name,
-                    'email'    => $request->email,
                     'password' => Hash::make($request->password),
                     'role_id'     => $request->role
                 ]);

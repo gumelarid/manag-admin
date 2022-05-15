@@ -40,14 +40,17 @@ class AuthController extends Controller
 
        
 
-        $check = User::where('email', $request->email)->first();
+        $check = User::where('email', $request->email);
        
-        if (!$check) {
+        if (!$check->first()) {
             return redirect('/')->withErrors('Opp You Are Not Registered !');
         };
-       
 
+        $status = $check->where('status', 1);
        
+        if (!$status->first()) {
+            return redirect('/')->withErrors('Opp Your account disabled, please contact your admin !');
+        };
        
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1])) {
             $notification = array(

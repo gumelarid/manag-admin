@@ -11,10 +11,10 @@
         <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
 
           @if ($setting->is_logo == 1)
-            @if ($setting->logo == 'logo-ct.png')
-              <img src="<?= url('/assets/img/logo-ct.png') ?>" class="navbar-brand-img h-100" alt="main_logo">
+            @if ($setting->logo == 'logo_default.png')
+              <img src="<?= url('/assets/logo/logo_default.png') ?>" class="navbar-brand-img h-100" alt="main_logo">
             @else
-              <img src="<?= url('/assets/img/'.$setting->logo) ?>" class="navbar-brand-img h-100" alt="main_logo">
+              <img src="<?= url('/assets/logo/'.$setting->logo) ?>" class="navbar-brand-img h-100" alt="main_logo">
             @endif
           @endif
           

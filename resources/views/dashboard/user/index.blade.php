@@ -132,8 +132,7 @@
                             <input type="text" name="name" id="name" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('name') }}" required>
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Email</label>
-                          <input type="email" name="email" id="email" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ old('email') }}" required>
+                          <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="email" required>
                         </div>
                         <div class="input-group input-group-outline my-3">
                           <label id="lb-pass" class="form-label">Password</label>
@@ -194,6 +193,7 @@
              
               var link = $('#link').attr('action', `<?php echo url('/dashboard/user/add'); ?>`);
               $('#password').attr('required', '');
+              $('#email').removeAttr('disabled')
               $('#name').val('')
               $('#email').val('')
               $('#name').val({{ old('name') }})
@@ -209,9 +209,11 @@
               $('#lb-pass').text('New Password')
              
               var link = $('#link').attr('action', `<?php echo url('/dashboard/user/edit/${data.user_id}'); ?>`);
+
               $('#password').removeAttr('required')
+              $('#email').attr('disabled', '');
               $('#password').val('')
-              $('#name').val(data.name)
+              $('#name').val(data.user_name)
               $('#email').val(data.email)
               $('#role').val(data.role_id)
               
