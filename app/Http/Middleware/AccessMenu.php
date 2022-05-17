@@ -20,7 +20,7 @@ class AccessMenu
     public function handle(Request $request, Closure $next)
     { 
             $url = request()->getPathInfo();
-            if ($url == '/dashboard/role/access' || '/dashboard/role/access/checked') {
+            if ($url == '/dashboard/role/access' || $url == '/dashboard/role/access/checked') {
                 $nav = NavModel::where('url','/dashboard/role')->first();
             }else{
                 $nav = NavModel::where('url',$url)->first();
